@@ -1,7 +1,7 @@
 {
-  "name": "ddos-guard",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "ddos-grd",
+  "version": "1.0.3",
+  "main": "dist/index.js",
   "scripts": {
     "dev": "nodemon src/index.ts",
     "build": "tsc",
