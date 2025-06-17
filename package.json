@@ -1,13 +1,26 @@
 {
   "name": "limiter.js",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "dist/index.js",
   "scripts": {
     "dev": "nodemon src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js"
   },
-  "keywords": [],
+  "keywords": [
+    "rate-limiter",
+    "request-rate-limiting",
+    "api-limiter",
+    "api-limiting",
+    "rate-limit",
+    "rate-limiting",
+    "express",
+    "middleware",
+    "typescript",
+    "node",
+    "express-rate-limiting",
+    "api-rate-limiting"
+  ],
   "author": "",
   "license": "ISC",
   "description": "",
