@@ -1,3 +1,3 @@
 export * from "./config/Config";
-export * from "./core/DDoSDetector";
+export * from "./core/Detector";
 export * from "./middleware/expressGuard";

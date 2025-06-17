@@ -1,5 +1,5 @@
 {
-  "name": "ddos-grd",
+  "name": "rate-limiter",
   "version": "1.0.5",
   "main": "dist/index.js",
   "scripts": {

@@ -2,7 +2,7 @@ import { RateLimiter } from "./RateLimiter";
 import { IPTracker } from "./IPTracker";
 import { Config } from "../config/Config";
 
-export class DDoSDetector {
+export class Detector {
   ipMap: Map<string, IPTracker>;
   rateLimiter: RateLimiter;
   banDurationMs: number;

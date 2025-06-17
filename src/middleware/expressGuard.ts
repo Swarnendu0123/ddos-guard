@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { DDoSDetector } from "../core/DDoSDetector";
+import { Detector } from "../core/Detector";
 
 export const expressGuardMiddleware =
-  (detector: DDoSDetector) =>
+  (detector: Detector) =>
   (req: Request, res: Response, next: NextFunction) => {
     const ip = req.ip || req.connection.remoteAddress || "unknown";
 
