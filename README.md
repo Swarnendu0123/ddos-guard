@@ -1,6 +1,6 @@
-# Rate Limiter
+# Limiter.js
 
-rate-limiter is a Node.js/TypeScript library that provides simple Rate limiter protection for Express applications. It tracks requests per IP address and enforces rate limits within a sliding time window. If an IP exceeds the allowed requests, rate-limiter can temporarily ban that IP and even permanently ban repeat offenders based on configurable thresholds. The core component is the `Detector` class (see [src/core/Detector.ts](https://github.com/Swarnendu0123/rate-limiter/blob/main/src/core/Detector.ts) in source) which maintains a map of IP trackers and applies a RateLimiter policy. You integrate it as an Express middleware, where it inspects each incoming request and blocks excess traffic, returning HTTP 429 when limits are exceeded.
+limiter.js is a Node.js/TypeScript library that provides simple Rate limiter protection for Express applications. It tracks requests per IP address and enforces rate limits within a sliding time window. If an IP exceeds the allowed requests, limiter.js can temporarily ban that IP and even permanently ban repeat offenders based on configurable thresholds. The core component is the `Detector` class (see [src/core/Detector.ts](https://github.com/Swarnendu0123/limiter.js/blob/main/src/core/Detector.ts) in source) which maintains a map of IP trackers and applies a RateLimiter policy. You integrate it as an Express middleware, where it inspects each incoming request and blocks excess traffic, returning HTTP 429 when limits are exceeded.
 
 # Features
 
@@ -16,13 +16,13 @@ rate-limiter is a Node.js/TypeScript library that provides simple Rate limiter p
 You can install the library using npm:
 
 ```bash
-npm install rate-limiter
+npm install limiter.js
 ```
 
 # Example Usage
 
 ```ts
-import { expressGuardMiddleware, Detector } from "rate-limiter";
+import { expressGuardMiddleware, Detector } from "limiter.js";
 
 import express from "express";
 const app = express();

@@ -1,6 +1,6 @@
 {
-  "name": "rate-limiter",
-  "version": "1.0.5",
+  "name": "limiter.js",
+  "version": "1.0.2",
   "main": "dist/index.js",
   "scripts": {
     "dev": "nodemon src/index.ts",
