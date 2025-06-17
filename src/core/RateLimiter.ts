@@ -16,18 +16,28 @@ export class RateLimiter {
 
   shouldBanPermanently(
     ipTracker: IPTracker,
-    parmanentBanThreshold?: number
+    permanentBanThreshold?: number
   ): boolean {
-    if (parmanentBanThreshold === undefined) {
+    if (permanentBanThreshold === undefined) {
       return false; // no permanent ban threshold set
     }
+    
+    // check if IP is already permanently banned
+    if (ipTracker.getIsPermanentlyBanned()) {
+      return false; // already permanently banned, no need to ban again
+    }
+
     const hitCount = ipTracker.getHitCountInWindow(this.windowMs);
-    return hitCount >= parmanentBanThreshold;
+    const banCount = ipTracker.getBanCount();
+    
+    // Permanent ban if current hits exceed threshold OR if IP has been banned multiple times
+    return hitCount >= permanentBanThreshold || banCount >= 3; // Ban permanently after 3 temporary bans
   }
 
   getWindowMs(): number {
     return this.windowMs;
   }
+  
   getMaxHits(): number {
     return this.maxHits;
   }

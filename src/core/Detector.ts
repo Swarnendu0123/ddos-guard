@@ -6,13 +6,13 @@ export class Detector {
   ipMap: Map<string, IPTracker>;
   rateLimiter: RateLimiter;
   banDurationMs: number;
-  parmanentBanThreshold?: number;
+  permanentBanThreshold?: number;
 
   constructor(config: Config) {
     this.ipMap = new Map<string, IPTracker>();
     this.rateLimiter = new RateLimiter(config.windowMs, config.maxHitsAllowed);
     this.banDurationMs = config.banDurationMs;
-    this.parmanentBanThreshold = config.parmanentBanThreshold;
+    this.permanentBanThreshold = config.permanentBanThreshold;
   }
 
   logStatus() {
@@ -44,7 +44,7 @@ export class Detector {
           tracker.bannedUntil
             ? new Date(tracker.bannedUntil).toISOString()
             : "N/A"
-        }, Permanently Banned: ${tracker.getIsParmanentlyBanned()}`
+        }, Permanently Banned: ${tracker.getIsPermanentlyBanned()}`
       );
     } else {
       console.log(`IP: ${ip} not found.`);
@@ -59,35 +59,41 @@ export class Detector {
       this.ipMap.set(ip, ipTracker);
     }
 
-    // record
-    ipTracker.recordHit(Date.now());
-
-    // Check for permanent ban condition
-    const parmanentBlockDecision = this.rateLimiter.shouldBanPermanently(
-      ipTracker,
-      this.parmanentBanThreshold
-    );
-
-    if (parmanentBlockDecision) {
-      ipTracker.banPermanently();
+    // Check if IP is permanently banned first
+    if (ipTracker.getIsPermanentlyBanned()) {
       return { blocked: true, reason: "IP is permanently banned." };
     }
 
-    // check for temporary ban
+    // Check if IP is currently under temporary ban
+    if (ipTracker.isBanned(Date.now())) {
+      return { blocked: true, reason: "Warning: IP is currently banned." };
+    }
+
+    // Record the hit
+    ipTracker.recordHit(Date.now());
+
+    // Check for permanent ban condition
+    const permanentBlockDecision = this.rateLimiter.shouldBanPermanently(
+      ipTracker,
+      this.permanentBanThreshold
+    );
+
+    if (permanentBlockDecision) {
+      ipTracker.banPermanently();
+      return { blocked: true, reason: "IP has been permanently banned due to excessive violations." };
+    }
+
+    // Check for temporary ban
     const blockDecision = this.rateLimiter.shouldBlock(ipTracker);
 
     if (blockDecision) {
-      if (ipTracker.isBanned(Date.now())) {
-        return { blocked: true, reason: "Warning: IP is currently banned." };
-      } else {
-        ipTracker.ban(this.banDurationMs);
-        return {
-          blocked: true,
-          reason: "Warning: Rate limit exceeded. Your IP has been banned.",
-        };
-      }
-    } else {
-      return { blocked: false };
+      ipTracker.ban(this.banDurationMs);
+      return {
+        blocked: true,
+        reason: "Warning: Rate limit exceeded. Your IP has been banned temporarily.",
+      };
     }
+
+    return { blocked: false };
   }
 }

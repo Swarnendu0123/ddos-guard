@@ -1,11 +1,12 @@
 export class IPTracker {
-  private idAddress: string;
+  private ipAddress: string;
   private hits: number[];
   bannedUntil: number | null;
+  private banCount: number = 0; // Track number of times this IP has been banned
   private permanentBan: boolean = false;
 
-  constructor(idAddress: string) {
-    this.idAddress = idAddress;
+  constructor(ipAddress: string) {
+    this.ipAddress = ipAddress;
     this.hits = [];
     this.bannedUntil = null;
   }
@@ -37,8 +38,12 @@ export class IPTracker {
     );
   }
 
-  getIsParmanentlyBanned(): boolean {
+  getIsPermanentlyBanned(): boolean {
     return this.permanentBan;
+  }
+
+  getBanCount(): number {
+    return this.banCount;
   }
 
   /**
@@ -48,6 +53,7 @@ export class IPTracker {
   ban(durationMs: number) {
     const currentTime = Date.now();
     this.bannedUntil = currentTime + durationMs;
+    this.banCount++; // Increment ban count when IP is banned
   }
 
   /**
@@ -58,7 +64,7 @@ export class IPTracker {
     this.bannedUntil = null; // Clear any temporary ban
   }
 
-  getIdAddress(): string {
-    return this.idAddress;
+  getIpAddress(): string {
+    return this.ipAddress;
   }
 }
