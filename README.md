@@ -16,7 +16,7 @@ limiter.js is a Node.js/TypeScript library that provides simple Rate limiter pro
 You can install the library using npm:
 
 ```bash
-npm install limiter.js
+npm install limiter.js@latest
 ```
 
 # Example Usage
